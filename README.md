@@ -787,7 +787,7 @@ python src/main.py \
   ```bash
   # Linux
   sudo systemctl status sshd
-
+  
   # Windows
   Get-Service WinRM
   ```
@@ -888,7 +888,7 @@ python src/main.py \
    # Linux
    touch scripts/linux/check_custom.sh
    chmod +x scripts/linux/check_custom.sh
-
+   
    # Windows
    New-Item scripts\windows\check_custom.ps1
    ```
@@ -897,7 +897,7 @@ python src/main.py \
    ```bash
    #!/bin/bash
    # check_custom.sh - 自定义检查脚本
-
+   
    echo "=== 开始自定义检查 ==="
    # 你的检查逻辑
    echo "检查完成"
@@ -1090,84 +1090,3 @@ class ResponseEngine:
 - 威胁情报和 AI 分析指南
 
 详见 [CHANGELOG.md](CHANGELOG.md) 查看完整更新历史。
-
-## 路线图
-
-### 计划中的功能
-
-**v1.1.0 (计划中)**:
-- [ ] Web 界面支持
-- [ ] 实时监控和告警
-- [ ] 多主机批量检查
-- [ ] 数据库存储支持
-- [ ] 更多威胁情报源集成
-
-**v1.2.0 (计划中)**:
-- [ ] 容器和 Kubernetes 安全检查
-- [ ] 云平台支持（AWS, Azure, GCP）
-- [ ] 自定义规则引擎
-- [ ] 报告导出（PDF, HTML）
-- [ ] RESTful API 接口
-
-**v2.0.0 (未来)**:
-- [ ] 分布式架构支持
-- [ ] 机器学习异常检测
-- [ ] 自动化应急响应剧本
-- [ ] SOAR 平台集成
-- [ ] 多语言支持（英文、日文等）
-
-## 常见问题 (FAQ)
-
-### Q1: 工具需要在目标主机安装吗？
-**A**: 不需要。工具通过 SSH/WinRM 远程执行脚本，无需在目标主机安装任何组件。
-
-### Q2: 支持哪些操作系统？
-**A**:
-- 目标主机：Linux（所有主流发行版）、Windows Server 2012+、Windows 10+
-- 运行工具的主机：Windows, Linux, macOS
-
-### Q3: 威胁情报和 AI 分析是必需的吗？
-**A**: 不是必需的。这些是可选的高级功能，不配置 API 密钥时，工具仍可正常执行基础检查。
-
-### Q4: 工具会修改目标系统吗？
-**A**: 大部分检查是只读的。但响应动作（如终止进程、封禁 IP）会修改系统状态。建议先生成报告分析后再执行响应。
-
-### Q5: 如何确保连接安全？
-**A**:
-- 优先使用 SSH 密钥认证而不是密码
-- 通过 VPN 或跳板机连接
-- 使用 WinRM HTTPS（端口 5986）而不是 HTTP
-- 限制工具的网络访问范围
-
-### Q6: 支持自定义检查脚本吗？
-**A**: 完全支持。参考"开发和扩展"章节添加自定义脚本。
-
-### Q7: 报告包含哪些内容？
-**A**: 报告包含执行摘要、详细检查结果、威胁情报查询、AI 分析、发现的问题和建议措施。
-
-### Q8: 工具有社区支持吗？
-**A**: 可以通过 GitHub Issues 提问和反馈。详见下方"联系方式"。
-
-## 贡献者
-
-感谢所有为本项目做出贡献的开发者和安全研究人员。
-
-## 联系方式
-
-- **GitHub Issues**: 提交 Bug 报告和功能请求
-- **技术支持**: 查看文档或提交 Issue
-- **安全漏洞**: 请通过私密渠道报告安全问题
-
-## 致谢
-
-本项目参考和借鉴了以下优秀的开源项目和工具：
-- MITRE ATT&CK Framework
-- CIS Benchmarks
-- SANS 应急响应指南
-- 各种开源安全工具和脚本
-
----
-
-**MCP-IRT** - 让应急响应更高效、更智能
-
-*Built with ❤️ for the cybersecurity community*
