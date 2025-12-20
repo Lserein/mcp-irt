@@ -1,0 +1,215 @@
+{
+  "scripts": {
+    "linux": {
+      "check_processes": "scripts/linux/check_processes.sh",
+      "check_network": "scripts/linux/check_network.sh",
+      "check_cron": "scripts/linux/check_cron.sh",
+      "check_logs": "scripts/linux/check_logs.sh",
+      "check_backdoor_signatures": "scripts/linux/check_backdoor_signatures.sh",
+      "check_user_security": "scripts/linux/check_user_security.sh",
+      "check_persistence": "scripts/linux/check_persistence.sh",
+      "check_system_integrity": "scripts/linux/check_system_integrity.sh",
+      "dump_process_memory": "scripts/linux/dump_process_memory.sh",
+      "kill_process": "scripts/linux/kill_process.sh",
+      "block_ip": "scripts/linux/block_ip.sh"
+    },
+    "windows": {
+      "check_processes": "scripts/windows/check_processes.ps1",
+      "check_network": "scripts/windows/check_network.ps1",
+      "check_tasks": "scripts/windows/check_tasks.ps1",
+      "check_logs": "scripts/windows/check_logs.ps1",
+      "check_persistence": "scripts/windows/check_persistence.ps1",
+      "check_rdp": "scripts/windows/check_rdp.ps1",
+      "check_defender": "scripts/windows/check_defender.ps1",
+      "check_powershell_history": "scripts/windows/check_powershell_history.ps1",
+      "check_user_security": "scripts/windows/check_user_security.ps1",
+      "kill_process": "scripts/windows/kill_process.ps1",
+      "block_ip": "scripts/windows/block_ip.ps1"
+    }
+  },
+  "workflow": {
+    "linux": [
+      "check_processes",
+      "check_network",
+      "check_backdoor_signatures",
+      "check_user_security",
+      "check_persistence",
+      "check_system_integrity",
+      "check_cron",
+      "check_logs"
+    ],
+    "windows": [
+      "check_processes",
+      "check_network",
+      "check_persistence",
+      "check_rdp",
+      "check_tasks",
+      "check_logs",
+      "check_defender",
+      "check_powershell_history",
+      "check_user_security"
+    ]
+  },
+  "timeouts": {
+    "connect": 30,
+    "execute": 300
+  },
+  "auto_response": {
+    "enabled": false,
+    "comment": "启用自动响应功能（默认关闭，需要手动确认）",
+    "enable_auto_kill_process": false,
+    "enable_auto_block_ip": false,
+    "enable_auto_dump_memory": true,
+    "enable_auto_quarantine": false,
+    "critical_threshold": 80,
+    "high_threshold": 60,
+    "medium_threshold": 40
+  },
+  "whitelist": {
+    "comment": "白名单配置，用于排除误报。自动识别控制端IP和IRT工具脚本",
+    "ips": [],
+    "auto_add_control_ip": true,
+    "comment_auto_add": "自动将控制端IP添加到白名单，防止误报为恶意外联",
+    "processes": [
+      "irt_check_processes",
+      "irt_check_network",
+      "irt_check_cron",
+      "irt_check_logs",
+      "irt_check_backdoor_signatures",
+      "irt_check_user_security",
+      "irt_check_persistence",
+      "irt_check_system_integrity",
+      "irt_dump_process_memory",
+      "irt_kill_process",
+      "irt_block_ip",
+      "irt_check_tasks",
+      "irt_check_rdp",
+      "irt_check_defender",
+      "irt_check_powershell_history"
+    ],
+    "paths": [
+      "/tmp/irt_*.sh",
+      "C:\\Windows\\Temp\\irt_*.ps1"
+    ]
+  },
+  "local_detection": {
+    "enabled": true,
+    "comment": "本地威胁检测（不依赖外部威胁情报）",
+    "check_process_signatures": true,
+    "check_network_patterns": true,
+    "check_behavior_analysis": true,
+    "confidence_threshold": "medium"
+  },
+  "threat_intel": {
+    "enabled": true,
+    "virustotal_api_key": "1212121",
+    "abuseipdb_api_key": "1212121",
+    "comment": "获取API密钥: VirusTotal (https://www.virustotal.com/gui/my-apikey) | AbuseIPDB (https://www.abuseipdb.com/api)",
+    "file_analysis": {
+      "enabled": true,
+      "comment": "文件威胁情报分析功能，通过文件哈希查询威胁情报",
+      "max_file_size_mb": 100,
+      "upload_method": "auto",
+      "comment_upload_method": "上传方式: hash_only(仅哈希), file_upload(总是上传文件), auto(先查哈希，未找到则上传文件-推荐)",
+      "analyzable_extensions": [
+        ".exe", ".scr", ".ps1", ".elf", ".sh",
+        ".dll", ".so", ".php", ".jsp", ".aspx",
+        ".bat", ".cmd", ".vbs", ".jar"
+      ],
+      "platforms": {
+        "virustotal": {
+          "enabled": true,
+          "comment": "使用现有的 virustotal_api_key"
+        },
+        "threatbook": {
+          "enabled": true,
+          "api_key": "1212121",
+          "api_endpoint": "https://api.threatbook.cn/v3/file/report",
+          "comment": "微步在线威胁情报平台，注册获取API密钥: https://x.threatbook.cn/"
+        }
+      },
+      "rate_limiting": {
+        "requests_per_minute": 4,
+        "sleep_between_requests": 0.5,
+        "comment": "VirusTotal免费版限制4请求/分钟"
+      }
+    },
+    "additional_sources": {
+      "alienvault_otx": {
+        "enabled": false,
+        "api_key": "YOUR_ALIENVAULT_OTX_API_KEY",
+        "comment": "https://otx.alienvault.com/"
+      },
+      "shodan": {
+        "enabled": false,
+        "api_key": "YOUR_SHODAN_API_KEY",
+        "comment": "https://www.shodan.io/"
+      }
+    }
+  },
+  "reporting": {
+    "format": "html",
+    "include_local_detection": true,
+    "include_behavior_analysis": true,
+    "include_threat_intel": true,
+    "include_response_actions": true,
+    "include_ai_analysis": true,
+    "detailed_indicators": true
+  },
+  "ai_analysis": {
+    "enabled": true,
+    "comment": "AI智能分析功能，支持两种模式：api（通过API调用）和 mcp（通过MCP Server）",
+    "mode": "api",
+    "api_provider": "qwen",
+    "api_key": "sk-1212121",
+    "api_model": "qwen-turbo",
+    "api_endpoint": "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
+    "mcp_server_path": "mcp_server.py",
+    "providers": {
+      "openai": {
+        "comment": "OpenAI GPT模型",
+        "models": ["gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"],
+        "api_endpoint": "https://api.openai.com/v1",
+        "install": "pip install openai"
+      },
+      "claude": {
+        "comment": "Anthropic Claude模型",
+        "models": ["claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307"],
+        "api_endpoint": "https://api.anthropic.com/v1",
+        "install": "pip install anthropic"
+      },
+      "qwen": {
+        "comment": "qwen模型",
+        "models": ["qwen-plus"],
+        "api_endpoint": "https://dashscope.aliyuncs.com/v1",
+        "install": "pip install qwen"
+      },
+      "custom": {
+        "comment": "自定义API端点（兼容OpenAI格式）",
+        "example_endpoints": [
+          "http://localhost:11434/v1 (Ollama)",
+          "http://localhost:8080/v1 (本地模型)",
+          "https://your-custom-api.com/v1",
+          "https://dashscope.aliyuncs.com/v1"
+        ]
+      }
+    },
+    "mcp_config": {
+      "comment": "MCP模式配置说明",
+      "setup_instructions": [
+        "1. 将mcp_server.py路径添加到Claude Desktop配置",
+        "2. 配置文件位置: ~/.config/Claude/claude_desktop_config.json (Linux/Mac) 或 %APPDATA%\\Claude\\claude_desktop_config.json (Windows)",
+        "3. 在mcpServers中添加mcp-irt-analyzer配置",
+        "4. 重启Claude Desktop"
+      ],
+      "example_config": {
+        "mcpServers": {
+          "mcp-irt-analyzer": {
+            "command": "python",
+            "args": ["C:\\Users\\24767\\Desktop\\mcp-irt\\mcp_server.py", "serve"]
+          }
+        }
+      }
+    }
+  }
+}

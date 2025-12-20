@@ -1,0 +1,55 @@
+{
+  "workflow": {
+    "linux": [
+      "check_processes",
+      "check_network",
+      "check_cron",
+      "check_logs",
+      "check_persistence"
+    ],
+    "windows": [
+      "check_processes",
+      "check_network",
+      "check_tasks",
+      "check_logs"
+    ]
+  },
+  "scripts": {
+    "linux": {
+      "check_processes": "scripts/linux/check_processes.sh",
+      "check_network": "scripts/linux/check_network.sh",
+      "check_cron": "scripts/linux/check_cron.sh",
+      "check_logs": "scripts/linux/check_logs.sh",
+      "check_persistence": "scripts/linux/check_persistence.sh"
+    },
+    "windows": {
+      "check_processes": "scripts/windows/check_processes.ps1",
+      "check_network": "scripts/windows/check_network.ps1",
+      "check_tasks": "scripts/windows/check_tasks.ps1",
+      "check_logs": "scripts/windows/check_logs.ps1"
+    }
+  },
+  "ai_analysis": {
+    "enabled": true,
+    "mode": "api",
+    "api_provider": "qwen",
+    "api_key": "${DASHSCOPE_API_KEY}",
+    "api_model": "qwen-turbo",
+    "api_endpoint": "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"
+  },
+  "threat_intel": {
+    "virustotal_enabled": false,
+    "abuseipdb_enabled": false
+  },
+  "_comment": "千问 API 配置说明",
+  "_models": {
+    "qwen-turbo": "快速模型，适合实时分析，成本最低",
+    "qwen-plus": "平衡模型，适合日常安全分析，性价比高",
+    "qwen-max": "高级模型，适合复杂威胁分析，效果最好"
+  },
+  "_api_key_setup": {
+    "windows": "set DASHSCOPE_API_KEY=sk-your-api-key-here",
+    "linux_macos": "export DASHSCOPE_API_KEY=sk-your-api-key-here",
+    "获取API_Key": "https://dashscope.console.aliyun.com/"
+  }
+}

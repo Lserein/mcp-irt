@@ -1,0 +1,31 @@
+# MCP-IRT 依赖包
+
+# SSH 连接支持
+paramiko>=3.4.0
+
+# WinRM 连接支持 (Windows 远程管理)
+pywinrm>=0.4.3
+
+# 用于WinRM的NTLM认证
+requests-ntlm>=1.2.0
+
+# HTTP请求（用于威胁情报查询）
+requests>=2.31.0
+
+# 可选：用于更好的日期处理
+python-dateutil>=2.8.2
+
+# AI分析支持（可选，根据使用的AI模式安装）
+# 如果使用API模式，请安装以下依赖：
+
+# OpenAI GPT支持（GPT-4, GPT-3.5-Turbo等）
+openai>=1.0.0
+
+# Anthropic Claude支持（Claude 3 Opus, Sonnet, Haiku等）
+anthropic>=0.18.0
+
+# 注意：
+# - 如果只使用OpenAI，只需安装：pip install openai
+# - 如果只使用Claude，只需安装：pip install anthropic
+# - 如果使用自定义API端点（如Ollama），无需额外安装（requests已包含）
+# - 如果使用MCP模式，无需安装AI库（通过Claude Desktop调用）

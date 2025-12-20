@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/*.log
+*.log
+
+# Reports (keep only recent reports)
+reports/*.md
+!reports/.gitkeep
+
+# Test files (do not commit)
+test_*.py
+*_test.py
+tests/
+diagnose.py
+fix_*.py
+fix_*.ps1
+test_*.bat
+test_*.ps1
+
+# Temporary documentation (do not commit)
+WINDOWS_*.md
+*_SUMMARY.md
+*_FIX*.md
+CHANGELOG.md
+WHATS_NEW.md
+QUICKSTART.md
+HOW_TO_RUN.md
+USAGE_EXAMPLES.md
+THREAT_INTEL_GUIDE.md
+*_GUIDE.md
+.cleanup_summary.md
+
+# Credentials (重要：不要提交密码和密钥)
+*.key
+*.pem
+*_rsa
+*_dsa
+*.ppk
+credentials.json
+secrets.yml
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.backup
+*.temp
+

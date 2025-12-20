@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应急响应报告 - 10.76.244.41</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1a1a1a;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4CAF50;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .meta-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #2196F3;
+        }
+
+        .meta-info p {
+            margin: 8px 0;
+            font-size: 1.05em;
+        }
+
+        .meta-info strong {
+            color: #2c3e50;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .summary-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .summary-card.success {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .summary-card.failed {
+            background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
+        }
+
+        .summary-card .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .summary-card .label {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .step-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .step-meta {
+            display: flex;
+            gap: 30px;
+            margin: 15px 0;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .step-meta span {
+            display: flex;
+            align-items: center;
+        }
+
+        .step-meta strong {
+            margin-right: 8px;
+            color: #333;
+        }
+
+        pre {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        pre .highlight {
+            background: #fff3cd;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .findings-section {
+            background: #fff9e6;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .recommendations-section {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+
+        .analysis-item {
+            background: #e3f2fd;
+            border-left: 3px solid #2196F3;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 4px;
+        }
+
+        .threat-intel-table {
+            margin-top: 15px;
+        }
+
+        .malicious {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .normal {
+            color: #388e3c;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e1e4e8;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ 应急响应报告</h1>
+
+        <div class="meta-info">
+            <p><strong>生成时间:</strong> 2025-12-20 14:54:07</p>
+            <p><strong>目标主机:</strong> 10.76.244.41</p>
+            <p><strong>操作系统:</strong> linux</p>
+        </div>
+
+        <div class="meta-info">
+            <h2>📋 威胁描述</h2>
+            <p>常规安全检查</p>
+        </div>
+
+        <h2>📊 执行摘要</h2>
+        <div class="summary-box">
+            <div class="summary-card">
+                <div class="label">总步骤数</div>
+                <div class="number">8</div>
+            </div>
+            <div class="summary-card success">
+                <div class="label">✅ 成功</div>
+                <div class="number">8</div>
+            </div>
+            <div class="summary-card failed">
+                <div class="label">❌ 失败</div>
+                <div class="number">0</div>
+            </div>
+        </div>
+
+        <h2>📝 执行详情</h2>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 1: check_processes</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:51:48.078680</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+进程检查 - 2025年 12月 20日 星期六 14:51:26 CST
+==========================================
+
+[*] 检查高CPU占用进程 (&gt;70%)...
+  USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+  root      147590  3.5  0.5  18120 11032 ?        Ss   14:51   0:00 sshd-session: root [priv]
+  root        1905  2.6 12.6 5184720 250688 ?      Ssl  04:44  16:22 /usr/bin/gnome-shell
+  root        1416  0.7  1.4 2277036 28240 ?       Ssl  04:43   4:21 /usr/sbin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  root        1688  0.6  1.4 384224 28604 tty2     Sl+  04:43   3:45 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/0/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+  root          67  0.1  0.0      0     0 ?        S    04:43   1:09 [kswapd0]
+  root        2115  0.1  0.5 464920 11092 ?        Sl   04:44   0:52 /usr/bin/vmtoolsd -n vmusr --blockFd 3
+  root         655  0.1  0.2 252928  4184 ?        Ssl  04:43   0:45 /usr/bin/vmtoolsd
+  root         818  0.1  0.9 1872564 18400 ?       Ssl  04:43   0:36 /usr/bin/containerd
+  root      126590  0.0  0.0      0     0 ?        I    14:06   0:01 [kworker/1:0-events]
+  root           1  0.0  0.4  23680  8336 ?        Ss   04:43   0:24 /sbin/init splash
+  root      126592  0.0  0.0      0     0 ?        I    14:07   0:01 [kworker/2:0-events]
+  root        3327  0.0  0.5 811336 10884 ?        Ssl  04:56   0:18 /usr/libexec/gnome-terminal-server
+  root      134489  0.0  0.0      0     0 ?        I    14:28   0:00 [kworker/1:2-events]
+  root        1662  0.0  0.1  94752  3236 ?        S&lt;sl 04:43   0:17 /usr/bin/pipewire
+
+[*] 检查高内存占用进程 (&gt;50%)...
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root        1905  2.6 12.6 5184720 250688 ?      Ssl  04:44  16:22 /usr/bin/gnome-shell
+root        1688  0.6  1.4 384224 28604 tty2     Sl+  04:43   3:45 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/0/gdm/Xauthority -n (输出过长已截断)</pre>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 2: check_network</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:52:12.400236</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+网络连接检查 - 2025年 12月 20日 星期六 14:51:36 CST
+==========================================
+
+[*] 检查监听端口...
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 127.0.0.1:34687         0.0.0.0:*               LISTEN      818/containerd      
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      4731/sshd: /usr/sbi 
+tcp6       0      0 :::1716                 :::*                    LISTEN      2054/kdeconnectd    
+tcp6       0      0 :::22                   :::*                    LISTEN      4731/sshd: /usr/sbi 
+udp        0      0 0.0.0.0:53575           0.0.0.0:*                           2054/kdeconnectd    
+udp        0      0 0.0.0.0:33390           0.0.0.0:*                           2857/python3        
+udp        0      0 10.76.244.41:3702       0.0.0.0:*                           2857/python3        
+udp        0      0 239.255.255.250:3702    0.0.0.0:*                           2857/python3        
+udp        0      0 172.18.0.1:3702         0.0.0.0:*                           2857/python3        
+udp        0      0 239.255.255.250:3702    0.0.0.0:*                           2857/python3        
+udp        0      0 172.17.0.1:3702         0.0.0.0:*                           2857/python3        
+udp        0      0 239.255.255.250:3702    0.0.0.0:*                           2857/python3        
+udp        0      0 0.0.0.0:58041           0.0.0.0:*                           2857/python3        
+udp        0      0 0.0.0.0:46812           0.0.0.0:*                           2054/kdeconnectd    
+udp        0      0 0.0.0.0:60284           0.0.0.0:*                           2857/python3        
+udp        0      0 0.0.0.0:35876           0.0.0.0:*                           2054/kdeconnectd    
+udp6       0      0 :::53800                :::*                                2054/kdeconnectd    (输出过长已截断)</pre>
+
+            <h4>分析结果:</h4>
+
+            <div class="analysis-item">发现 4 个活动连接</div>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 3: check_backdoor_signatures</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:52:25.221632</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+后门特征检测 - 2025年 12月 20日 星期六 14:52:02 CST
+==========================================
+
+[*] 检测Meterpreter特征...
+  [*] 检查默认端口 (4444, 4445, 5555, 6666)...
+  [*] 检查Meterpreter进程名称...
+  [*] 检查反向Shell命令...
+
+[*] 检测Cobalt Strike特征...
+  [*] 检查CS默认端口 (50050)...
+  [*] 检查Beacon进程...
+
+[*] 检测WebShell文件...
+<span class="highlight">>> [!]   [*] 扫描Web目录中的可疑PHP/JSP/ASPX文件...</span>
+
+[*] 检测挖矿程序...
+  [*] 检查挖矿进程名...
+  [*] 检查矿池连接...
+  [*] 检查stratum协议...
+
+[*] 检测Rootkit特征...
+<span class="highlight">>> [!]   [*] 检查/dev/shm中的可疑文件...</span>
+<span class="highlight">>> [!]   [!] 可疑 - /dev/shm中的文件: 总计 4</span>
+<span class="highlight">>> [!]   [!] 可疑 - /dev/shm中的文件: -rw-r--r--  1 root root   32 11月17日 16:29 sem.haveged_sem</span>
+  [*] 检查/tmp中的隐藏可执行文件...
+  [*] 检查LD_PRELOAD劫持...
+
+[*] 检测持久化机制...
+<span class="highlight">>> [!]   [*] 检查crontab中的可疑任务...</span>
+  [*] 检查系统级crontab...
+  [*] 检查systemd服务...
+  [*] 检查.bashrc/.bash_profile持久化...
+
+[*] 检测SSH后门...
+  [*] 检查authorized_keys...
+<span class="highlight">>> [!]   [!] 可疑 - 可疑SSH密钥: command=&quot;git-shell -c &quot;$SSH_ORIGINAL_COMMAND&quot;&quot; ssh-rsa AAAAB3NzaC1yc2EAAAADAQABA...</span>
+<span class="highlight">>> [!]   [*] 检查SSH配置异常...</span>
+  [!] 警告 - Root登录已启用
+  [*] 信息 - 密码认证已启用
+
+[*] 检测进程注入特征...
+<span class="highlight">>> [!]   [*] 检查可疑的内存映射...</span>
+
+<span class="highlight">>> [!] [*] 检测异常网络监听...</span>
+  [*] 非标准端口监听...
+<span class="highlight">>> [!]   [!] 可疑 - 非标准端口监听: :::1716 (2054/kdeconnectd)</span>
+
+==========================================
+后门特征检测完成
+时间: 2025年 12月 20日 星期六 14:52:04 CST
+==========================================
+</pre>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 4: check_user_security</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:52:34.004760</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+用户权限安全检测 - 2025年 12月 20日 星期六 14:52:12 CST
+==========================================
+
+[*] 检测影子用户（UID=0的非root用户）...
+  [+] 正常 - root 用户
+
+<span class="highlight">>> [!] [*] 检测可疑的系统用户...</span>
+<span class="highlight">>> [!]   [!] 可疑 - 系统用户有登录shell: sync (UID:4, Shell:/bin/sync)</span>
+<span class="highlight">>> [!]   [!] 可疑 - 系统用户有登录shell: postgres (UID:116, Shell:/bin/bash)</span>
+
+[*] 检测最近创建的用户（7天内）...
+  [*] 未找到用户操作日志文件
+
+[*] 检测空密码用户...
+
+[*] 检测sudo权限用户...
+  [*] /etc/sudoers 中的配置:
+    root	ALL=(ALL:ALL) ALL
+    %sudo	ALL=(ALL:ALL) ALL
+  [*] /etc/sudoers.d/ 中的配置:
+    文件: /etc/sudoers.d/kali-grant-root
+      %kali-trusted   ALL=(ALL:ALL) NOPASSWD: ALL
+    文件: /etc/sudoers.d/ospd-openvas
+      _gvm ALL = NOPASSWD: /usr/sbin/openvas
+    文件: /etc/sudoers.d/README
+  [*] sudo/wheel 组成员:
+kali
+
+<span class="highlight">>> [!] [*] 检测异常用户home目录...</span>
+
+<span class="highlight">>> [!] [*] 检测异常的用户shell...</span>
+
+[*] 检测用户SSH配置...
+  [*] 检查用户 .ssh 的SSH配置: /root/.ssh
+
+[*] 检测最近登录活动...
+  [*] 最近10次成功登录:
+
+<span class="highlight">>> [!]   [*] 最近10次失败登录:</span>
+
+[*] 检测当前登录用户...
+  14:52:12 up 10:08,  3 users,  load average: 0.23, 0.34, 0.35
+  USER     TTY      来自           LOGIN@   IDLE   JCPU   PCPU WHAT
+  root              10.76.244.252    14:51   27:04   0.00s  0.01s sshd-session: root [priv]
+  root     tty2     -                1711月25 32days  3:45   0.05s /usr/libexec/gnome-session-binary
+  root              -                1711月25 27:04   0.00s  2.13s /usr/lib/systemd/systemd --user
+
+[*] 检测密码策略...
+  [*] 密码过期策略:
+PASS_MAX_DAYS	99999
+PASS_MIN_DAYS	0
+PASS_WARN_AGE	7
+  [*] PAM密码策略:
+
+<span class="highlight">>> [!] [*] 检测组权限异常...</span>
+  [*] 敏感组的成员:
+    sudo: kali
+    adm: kali
+
+[*] 检测用户文件完整性...
+  /etc/passwd MD5: 71190de96bfaee222362a1da2f0f22bd
+  /etc/shadow MD5: 441a3e7a87a3206f52bea4e32ad98e24
+  /etc/passwd 权限: 644
+  /etc/shadow 权限: 640
+<span class="highlight">>> [!]   [!] 警告 - /etc/shadow 权限异常（应为000/400/600）</span>
+
+[*] 检测用户crontab任务...
+
+[*] 检测历史命令中的敏感操作...
+  [*] 检查 root 的历史命令: /root/.zsh_history
+<span class="highlight">>> [!]     [!] 可疑命令: chmod 777 rip-hg.pl</span>
+<span class="highlight">>> [!]     [!] 可疑命令: chmod 777 rip-svn.pl</span>
+<span class="highlight">>> [!]     [!] 可疑命令: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpgcurl -fsSL https://download.docker.com/</span> (输出过长已截断)</pre>
+
+            <h4>错误输出:</h4>
+            <pre>/tmp/irt_check_user_security.sh: 行 167: last: 未找到命令
+</pre>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 5: check_persistence</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:52:45.076647</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+持久化机制全面检测 - 2025年 12月 20日 星期六 14:52:22 CST
+==========================================
+
+[1] 检测 Alias 命令劫持后门...
+------------------------------------------------------------
+  [*] 检查系统级别的alias配置...
+  [*] 检查用户级别的alias配置...
+    用户: root, 文件: .bashrc
+<span class="highlight">>> [!]       [!] 可疑 - alias ls=&#x27;ls --color=auto&#x27;</span>
+      alias grep=&#x27;grep --color=auto&#x27;
+      alias fgrep=&#x27;fgrep --color=auto&#x27;
+      alias egrep=&#x27;egrep --color=auto&#x27;
+      alias diff=&#x27;diff --color=auto&#x27;
+      alias ip=&#x27;ip --color=auto&#x27;
+      alias ll=&#x27;ls -l&#x27;
+      alias la=&#x27;ls -A&#x27;
+      alias l=&#x27;ls -CF&#x27;
+    用户: root, 文件: .zshrc
+      alias history=&quot;history 0&quot;
+<span class="highlight">>> [!]       [!] 可疑 - alias ls=&#x27;ls --color=auto&#x27;</span>
+      alias grep=&#x27;grep --color=auto&#x27;
+      alias fgrep=&#x27;fgrep --color=auto&#x27;
+      alias egrep=&#x27;egrep --color=auto&#x27;
+      alias diff=&#x27;diff --color=auto&#x27;
+      alias ip=&#x27;ip --color=auto&#x27;
+      alias ll=&#x27;ls -l&#x27;
+      alias la=&#x27;ls -A&#x27;
+      alias l=&#x27;ls -CF&#x27;
+    用户: kali, 文件: .bashrc
+<span class="highlight">>> [!]       [!] 可疑 - alias ls=&#x27;ls --color=auto&#x27;</span>
+      alias grep=&#x27;grep --color=auto&#x27;
+      alias fgrep=&#x27;fgrep --color=auto&#x27;
+      alias egrep=&#x27;egrep --color=auto&#x27;
+      alias diff=&#x27;diff --color=auto&#x27;
+      alias ip=&#x27;ip --color=auto&#x27;
+      alias ll=&#x27;ls -l&#x27;
+      alias la=&#x27;ls -A&#x27;
+      alias l=&#x27;ls -CF&#x27;
+    用户: kali, 文件: .zshrc
+      alias history=&quot;history 0&quot;
+<span class="highlight">>> [!]       [!] 可疑 - alias ls=&#x27;ls --color=auto&#x27;</span>
+      alias grep=&#x27;grep --color=auto&#x27;
+      alias fgrep=&#x27;fgrep --color=auto&#x27;
+      alias egrep=&#x27;egrep --color=auto&#x27;
+      alias diff=&#x27;diff --color=auto&#x27;
+      alias ip=&#x27;ip --color=auto&#x27;
+      alias ll=&#x27;ls -l&#x27;
+      alias la=&#x27;ls -A&#x27;
+      alias l=&#x27;ls -CF&#x27;
+
+[2] 检测 PAM (Pluggable Authentication Modules) 后门...
+------------------------------------------------------------
+  [*] 检查 PAM 配置文件...
+<span class="highlight">>> [!]     [!] 可疑PAM模块 in common-account:</span>
+      account	[success=1 new_authtok_reqd=done default=ignore]	pam_winbind.so
+<span class="highlight">>> [!]     [!] 可疑PAM模块 in common-auth:</span>
+      auth	[success=1 default=ignore]	pam_winbind.so krb5_auth krb5_ccache_type=FILE cached_login try_first_ (输出过长已截断)</pre>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 6: check_system_integrity</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:53:35.450682</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+系统完整性检查 - 2025年 12月 20日 星期六 14:52:32 CST
+==========================================
+
+<span class="highlight">>> [!] [1] 检测可疑位置的ELF可执行文件...</span>
+------------------------------------------------------------
+  [*] 检查临时目录中的ELF文件...
+    目录: /tmp
+<span class="highlight">>> [!]       [!] 可疑ELF文件: /tmp/shell.elf</span>
+-rwxrwxrwx 1 root root 250 12月15日 14:09 /tmp/shell.elf
+/tmp/shell.elf: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, no section header
+    目录: /dev/shm
+    目录: /var/tmp
+
+[2] 检测隐藏的ELF文件（以.开头）...
+------------------------------------------------------------
+  [*] 检查目录: /tmp
+  [*] 检查目录: /dev/shm
+  [*] 检查目录: /var/tmp
+  [*] 检查目录: /home
+  [*] 检查目录: /root
+
+[3] 检测关键系统命令的完整性...
+------------------------------------------------------------
+  [*] 检查关键命令...
+    [!] 警告 - service 是脚本而非二进制: /usr/sbin/service
+        类型:  POSIX shell script, ASCII text executable, with very long lines (459)
+    [!] 警告 - firewalld 是脚本而非二进制: /usr/sbin/firewalld
+        类型:  Python script, ASCII text executable
+
+<span class="highlight">>> [!] [4] 检测可疑的SUID/SGID文件...</span>
+------------------------------------------------------------
+  [*] 查找SUID文件（最近7天修改）...
+  [*] 查找SGID文件（最近7天修改）...
+<span class="highlight">>> [!]   [*] 检查可疑位置的SUID/SGID文件...</span>
+
+[5] 检测无所有者的文件（可能是攻击者删除账户后遗留）...
+------------------------------------------------------------
+  [*] 查找无所有者的文件...
+    [!] 无所有者文件: /var/lib/docker/overlay2/9360f4e52f740159a5e01f8ccf61950ccb3e4002e723440e3bb36efcc43829a0/diff/usr/local/bin/caido-cli
+-rwxr-xr-x 1 1001 1001 147M 2025年 5月14日 /var/lib/docker/overlay2/9360f4e52f740159a5e01f8ccf61950ccb3e4002e723440e3bb36efcc43829a0/diff/usr/local/bin/caido-cli
+      类型: ELF可执行文件
+    [!] 无所有者文件: /root/.cpan/build/DBD-SQLite-1.76-0/constants.inc
+-rw-r--r-- 1 1001 1001 39K 2024年 9月17日 /root/.cpan/build/DBD-SQLite-1.76-0/constants.inc
+    [!] 无所有者文件: /root/.cpan/build/DBD-SQLite-1.76-0/Changes
+-rw-r--r-- 1 1001 1001 52K 2024年10月19日 /root/.cpan/build/DBD-SQLite-1.76-0/Changes
+    [!] 无所有者文件: /root/.cpan/build/DBD-SQLite-1.76-0/typemap
+-rw-r--r-- 1 1001 1001 664 2024年 1月21日 /root/.cpan/build/DB (输出过长已截断)</pre>
+
+            <h4>文件威胁情报分析:</h4>
+            <table class="threat-intel-table">
+                <thead>
+                    <tr>
+                        <th>文件路径</th>
+                        <th>SHA256（前16位）</th>
+                        <th>威胁分数</th>
+                        <th>状态</th>
+                        <th>检出率</th>
+                        <th>来源</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>/tmp/shell.elf</td>
+                        <td><code>179fa7b1207e7a06...</code></td>
+                        <td>0</td>
+                        <td class="normal">🟢 正常</td>
+                        <td>N/A</td>
+                        <td>VirusTotal</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 7: check_cron</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:53:50.591578</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+计划任务检查 - 2025年 12月 20日 星期六 14:53:28 CST
+==========================================
+
+[*] 检查系统crontab (/etc/crontab)...
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don&#x27;t have to run the `crontab&#x27;
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+17 *	* * *	root	cd / &amp;&amp; run-parts --report /etc/cron.hourly
+25 6	* * *	root	test -x /usr/sbin/anacron || { cd / &amp;&amp; run-parts --report /etc/cron.daily; }
+47 6	* * 7	root	test -x /usr/sbin/anacron || { cd / &amp;&amp; run-parts --report /etc/cron.weekly; }
+52 6	1 * *	root	test -x /usr/sbin/anacron || { cd / &amp;&amp; run-parts --report /etc/cron.monthly; }
+#
+
+[*] 检查 /etc/cron.d/ 目录...
+总计 36
+drwxr-xr-x   2 root root  4096 2025年 4月25日 .
+drwxr-xr-x 198 root root 12288 12月20日 14:21 ..
+-rw-r--r--   1 root root   188 2025年 1月 1日 e2scrub_all
+-rw-r--r--   1 root root   607 2024年 9月18日 john
+-rw-r--r--   1 root root   712 2024年12月 4日 php
+-rw-r--r--   1 root root   102 2025年 2月 6日 .placeholder
+-rw-r--r--   1 root root   400 2024年 1月16日 sysstat
+
+--- /etc/cron.d/e2scrub_all ---
+30 3 * * 0 root test -e /run/systemd/system || SERVICE_MODE=1 /usr/libexec/e2fsprogs/e2scrub_all_cron
+10 3 * * * root test -e /run/systemd/system || SERVICE_MODE=1 /sbin/e2scrub_all -A -r
+
+--- /etc/cron.d/john ---
+#
+# Start john everyday at the same to try to crack the passwords. The
+# second line will then later stop the process so that it doesn&#x27;t
+# consume system resources that (输出过长已截断)</pre>
+
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <h3 class="step-title">步骤 8: check_logs</h3>
+                <span class="status-badge success">✅ 成功</span>
+            </div>
+
+            <div class="step-meta">
+                <span><strong>时间:</strong> 2025-12-20T14:53:56.750840</span>
+                <span><strong>退出码:</strong> 0</span>
+            </div>
+
+            <h4>标准输出:</h4>
+            <pre>==========================================
+日志检查 - 2025年 12月 20日 星期六 14:53:35 CST
+==========================================
+
+<span class="highlight">>> [!] [*] 检查最近的认证失败 (最后50条)...</span>
+
+[*] 检查成功的SSH登录 (最后30条)...
+
+[*] 检查root用户登录...
+
+[*] 检查sudo命令执行 (最后30条)...
+
+[*] 检查用户添加/删除...
+
+[*] 检查凌晨时段登录 (02:00-05:59)...
+
+<span class="highlight">>> [!] [*] 检查暴力破解迹象 (同一IP失败次数)...</span>
+
+[*] 检查系统日志错误 (最后20条)...
+<span class="highlight">>> [!] 12月 15 10:45:53 kali sshd-session[22808]: pam_winbind(sshd:auth): internal module error (retval = PAM_AUTHINFO_UNAVAIL(9), user = &#x27;root&#x27;)</span>
+12月 15 13:54:20 kali systemd-networkd-wait-online[86459]: Timeout occurred while waiting for network connectivity.
+12月 17 10:02:48 kali systemd-networkd-wait-online[88882]: Timeout occurred while waiting for network connectivity.
+12月 17 10:02:49 kali systemd-networkd-wait-online[88919]: Timeout occurred while waiting for network connectivity.
+12月 17 17:13:42 kali kernel: Bluetooth: hci0: unexpected cc 0x0c12 length: 2 &lt; 3
+<span class="highlight">>> [!] 12月 17 17:13:42 kali kernel: Bluetooth: hci0: Opcode 0x0c12 failed: -38</span>
+<span class="highlight">>> [!] 12月 17 17:13:55 kali gdm-password][107006]: pam_unix(gdm-password:auth): conversation failed</span>
+12月 17 17:13:55 kali gdm-password][107006]: pam_unix(gdm-password:auth): auth could not identify password for [root]
+12月 17 17:13:55 kali gdm-password][107006]: pam_winbind(gdm-password:auth): Could not retrieve user&#x27;s password
+12月 18 10:02:45 kali systemd-networkd-wait-online[120291]: Timeout occurred while waiting for network connectivity.
+12月 18 12:11:21 kali kernel: Bluetooth: hci0: unexpected cc 0x0c12 length: 2 &lt; 3
+<span class="highlight">>> [!] 12月 18 12:11:21 kali kernel: Bluetooth: hci0: Opcode 0x0c12 failed: -38</span>
+<span class="highlight">>> [!] 12月 18 12:11:28 kali gdm-password][124416]: pam_unix(gdm-password:auth): conversation failed</span>
+12月 18 12:11:41 kali systemd-networkd-wait-online[124169]: Timeout occurred while waiting for network connectivity.
+12月 18 22:23:00 kali kernel: Bluetooth: hci0: unexpected cc 0x0c12 length: 2 &lt; 3
+<span class="highlight">>> [!] 12月 18 22:23:00 kali kernel: Bluetooth: hci0: Opcode 0x0c12 failed: -38</span>
+12月 19 11:05:53 kali systemd-networkd-wait-online[126855]: Timeout occurred while waiti (输出过长已截断)</pre>
+
+            <h4>错误输出:</h4>
+            <pre>/tmp/irt_check_logs.sh: 行 104: last: 未找到命令
+/tmp/irt_check_logs.sh: 行 116: lastlog: 未找到命令
+</pre>
+
+            <h4>分析结果:</h4>
+
+            <div class="analysis-item">⚠️ 发现登录失败记录</div>
+
+            <div class="analysis-item">发现管理员账户活动</div>
+
+        </div>
+
+        <div class="findings-section">
+            <h2>⚠️ 发现的问题</h2>
+
+            <h3>可疑计划任务</h3>
+            <ul>
+                <li>[*] 搜索可疑的cron命令模式...</li>
+
+            </ul>
+
+            <h3>日志异常</h3>
+            <ul>
+                <li>[*] 检查最近的认证失败 (最后50条)...</li>
+                <li>[*] 检查暴力破解迹象 (同一IP失败次数)...</li>
+                <li>12月 17 17:13:42 kali kernel: Bluetooth: hci0: Opcode 0x0c12 failed: -38</li>
+                <li>12月 17 17:13:55 kali gdm-password][107006]: pam_unix(gdm-password:auth): conversation failed</li>
+                <li>12月 18 12:11:21 kali kernel: Bluetooth: hci0: Opcode 0x0c12 failed: -38</li>
+                <li>12月 18 12:11:28 kali gdm-password][124416]: pam_unix(gdm-password:auth): conversation failed</li>
+                <li>12月 18 22:23:00 kali kernel: Bluetooth: hci0: Opcode 0x0c12 failed: -38</li>
+
+            </ul>
+
+        </div>
+
+        <div class="recommendations-section">
+            <h2>💡 建议措施</h2>
+            <ul>
+                <li>删除或禁用可疑的计划任务</li>
+                <li>检查系统启动项和服务配置</li>
+                <li>加强认证机制，修改弱密码</li>
+                <li>启用多因素认证</li>
+                <li>配置日志监控和告警</li>
+                <li>保存本次应急响应的所有日志和取证数据</li>
+                <li>更新安全策略和应急响应预案</li>
+
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>本报告由 MCP-IRT 自动化应急响应工具生成</p>
+            <p>报告生成时间: 2025-12-20 14:54:07</p>
+        </div>
+    </div>
+</body>
+</html>
